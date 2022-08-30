@@ -34,6 +34,9 @@ class Config(object):
 
     Attributes
     ----------
+    REQUESTS_CA_BUNDLE : str
+        Path to certificate chain for Requests
+
     CUCM_PUBLISHER : str
         FQDN of CUCM Publisher
 
@@ -46,6 +49,8 @@ class Config(object):
     CUCM_PASSWORD : str
         CUCM password to use when application does not use user provided credentials
     """
+    REQUESTS_CA_BUNDLE = os.environ.get('REQUESTS_CA_BUNDLE') or os.path.join(basedir, 'ssl', 'CertBundle.pem')
+
     CUCM_PUBLISHER = os.environ.get('CUCM_PUBLISHER') or 'cucm01.contoso.com'
     CUCM_VERSION = os.environ.get('CUCM_VERSION') or '12.5'
     CUCM_USERNAME = os.environ.get('CUCM_USERNAME') or ''

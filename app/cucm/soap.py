@@ -36,8 +36,10 @@ import os
 import sys
 import logging
 
-from app import session
+from requests import Session
 
+session = Session()
+session.verify = os.environ['REQUESTS_CA_BUNDLE']
 
 class Soap:
 

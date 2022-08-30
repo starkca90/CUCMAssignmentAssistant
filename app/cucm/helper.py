@@ -7,6 +7,9 @@ Provides helper functions to CUCM AXL interface
 Version 1.0
 Initial release
 
+Version 1.1
+Added get unassigned devices to get any SEP, BOT, TAB, TCT or CSF devices that does not have a owner set
+
 ===
 
 This script requires that `Flask` be installed within the Python environment you are running this script
@@ -72,6 +75,13 @@ def get_unassigned_devices():
     Retrieves list of devices that do not have an Owner set
     :return: list of devices that do not have an owner set
     """
+    query = "SELECT name, description, fkenduser FROM device WHERE fkenduser is null AND (name like \"SEP%\" OR name like \"BOT%\" OR name like \"TAB%\" OR name like \"TCT%\" OR name like \"CSF%\")"
+
+    sql_resp = axl.execute_sql_query(query)
+
+    return sql_resp
+
+ 
 
 
 def find_users_with_devices(devices: list):
