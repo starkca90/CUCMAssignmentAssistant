@@ -29,6 +29,34 @@ def get_history():
     print(Soap().show_history())
 
 
+def get_phone(query):
+    """
+    Runs getPhone request with given device name
+    :param query: Name of phone
+    :return: getPhone
+    """
+
+    try:
+        logging.debug('get_phone: {}'.format(query))
+
+        resp = Soap().get_service().getPhone(name=query)
+
+        return resp
+    
+    except Fault as error:
+        Soap().show_history()
+        logging.error('getPhone Fault: Credentials? {}'.format(error))
+        raise
+
+    except ConnectionError as error:
+        logging.error('Unable to reach CUCM: {}'.format(error))
+        raise
+
+    except:
+        logging.error('Unexpected error: {}'.format(sys.exc_info()[0]))
+        raise
+
+
 def execute_sql_query(query):
     """
     Runs executeSQLQuery against AXL interface
@@ -37,7 +65,7 @@ def execute_sql_query(query):
     """
 
     try:
-        logging.info(query)
+        logging.debug(query)
 
         resp = Soap().get_service().executeSQLQuery(sql=query)
 

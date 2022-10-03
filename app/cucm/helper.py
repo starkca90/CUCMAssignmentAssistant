@@ -70,18 +70,46 @@ def get_device_enums(devices: str):
     return enums
 
 
+def get_phone_lines(name: str):
+    """
+    Retireves all lines from the given phone
+    :param name: Name of the phone interested in
+    :return: line information on given phone
+    """
+    get_phone_resp = axl.get_phone(name)
+
+    return get_phone_resp['return']['phone']['lines']['line']
+
+
+
 def get_unassigned_devices():
     """
     Retrieves list of devices that do not have an Owner set
     :return: list of devices that do not have an owner set
     """
-    query = "SELECT name, description, fkenduser FROM device WHERE fkenduser is null AND (name like \"SEP%\" OR name like \"BOT%\" OR name like \"TAB%\" OR name like \"TCT%\" OR name like \"CSF%\")"
+    query = "SELECT name, description FROM device WHERE fkenduser is null AND (name like \"SEP%\" OR name like \"BOT%\" OR name like \"TAB%\" OR name like \"TCT%\" OR name like \"CSF%\")"
 
     sql_resp = axl.execute_sql_query(query)
 
-    return sql_resp
+    return sql_resp['return']['row']
 
  
+def find_user_by_telephone_number(number: str):
+    """
+    Queries CUCM for user with specified telephone number
+    :param number: Telephone Number being looked for
+    :return: Matching End User
+    """
+    query = "SELECT firstname, lastname, status, userid, telephonenumber FROM enduser WHERE telephonenumber like \"{}\"".format(number)
+
+    sql_resp = axl.execute_sql_query(query)
+
+    if sql_resp['return']: 
+        sql_resp = sql_resp['return']['row']
+    else:
+        sql_resp = None
+
+    return sql_resp
 
 
 def find_users_with_devices(devices: list):

@@ -1,4 +1,4 @@
-zeep
+zeep==3.4.0
 lxml
 sqlescapy
 python-dotenv
