@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 OUTPUT/results.csv
-ssl/
+ssl/CertBundle.pem
